@@ -46,8 +46,8 @@
 
 	self.curWaypoint++;
 	
-	if (self.curWaypoint > lastWaypoint)
-		self.curWaypoint = lastWaypoint - 1;
+	if (self.curWaypoint >= lastWaypoint)
+		self.curWaypoint = 0;
 	
 	WayPoint *waypoint = (WayPoint *) [m._waypoints objectAtIndex:self.curWaypoint];
 	
@@ -55,7 +55,7 @@
 }
 
 -(void)creepLogic:(ccTime)dt {
-	
+	return;
 	
 	// Rotate creep to face next waypoint
 	WayPoint *waypoint = [self getCurrentWaypoint ];
@@ -65,6 +65,24 @@
 	CGFloat cocosAngle = CC_RADIANS_TO_DEGREES(-1 * waypointAngle);
 	
 	float rotateSpeed = 0.5 / M_PI; // 1/2 second to roate 180 degrees
+	float rotateDuration = fabs(waypointAngle * rotateSpeed);    
+	
+	[self runAction:[CCSequence actions:
+					 [CCRotateTo actionWithDuration:rotateDuration angle:cocosAngle],
+					 nil]];		
+}
+
+-(void)creepLogic{
+	NSLog(@"SW ByTalk- ");
+	
+	// Rotate creep to face next waypoint
+	WayPoint *waypoint = [self getCurrentWaypoint ];
+	
+	CGPoint waypointVector = ccpSub(waypoint.position, self.position);
+	CGFloat waypointAngle = ccpToAngle(waypointVector);
+	CGFloat cocosAngle = CC_RADIANS_TO_DEGREES(-1 * waypointAngle);
+	
+	float rotateSpeed = 0.2 / M_PI; // 1/2 second to roate 180 degrees
 	float rotateDuration = fabs(waypointAngle * rotateSpeed);    
 	
 	[self runAction:[CCSequence actions:

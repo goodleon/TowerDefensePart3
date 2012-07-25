@@ -198,7 +198,7 @@
 	int moveDuration = target.moveDuration;	
 	id actionMove = [CCMoveTo actionWithDuration:moveDuration position:waypoint.position];
 	id actionMoveDone = [CCCallFuncN actionWithTarget:self selector:@selector(FollowPath:)];
-	[target runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
+	[target runAction:[CCSequence actions:actionMove, actionMoveDone ,nil]];
 	
 	// Add to targets array
 	target.tag = 1;
@@ -213,10 +213,11 @@
 	WayPoint * waypoint = [creep getNextWaypoint];
 
 	int moveDuration = creep.moveDuration;
+    CCCallFunc *actionRotation = [CCCallFunc actionWithTarget:creep selector:@selector(creepLogic)];
 	id actionMove = [CCMoveTo actionWithDuration:moveDuration position:waypoint.position];
 	id actionMoveDone = [CCCallFuncN actionWithTarget:self selector:@selector(FollowPath:)];
 	[creep stopAllActions];
-	[creep runAction:[CCSequence actions:actionMove, actionMoveDone, nil]];
+	[creep runAction:[CCSequence actions:actionRotation,actionMove, actionMoveDone, nil]];
 }
 
 -(void)gameLogic:(ccTime)dt {
